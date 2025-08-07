@@ -1,0 +1,46 @@
+:root {
+  --verde: #2E7D32;
+  --rojo: #C62828;
+  --gris-claro: #f2f2f2;
+  --negro: #1a1a1a;
+  --blanco: #ffffff;
+  --max-width: 1200px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: var(--gris-claro);
+  color: var(--negro);
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+main {
+  padding: 2rem;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.productos-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.product-card {
+  border: 1px solid #ccc;
+  padding: 1rem;
+  width: 250px;
+  text-align: center;
+  border-radius: 8px;
+}

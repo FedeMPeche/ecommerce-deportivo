@@ -1,16 +1,26 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Home from '../pages/Home.tsx';
-import Products from '../pages/Products.tsx';
-import Login from '../pages/Login.tsx';
 
+import Home from '../pages/Home';
+import Productos from '../pages/Productos';
+import Login from '../pages/Login';
+import Register from '../pages/Register';
+import Carrito from '../pages/Carrito';
+import Admin from '../pages/Admin';
+import NotFound from '../pages/NotFound';
 
-export default function AppRoutes() {
+const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/productos" element={<Products />} />
+      <Route path="/productos" element={<Productos />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/carrito" element={<Carrito />} />
+      <Route path="/admin" element={<Admin />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
-}
+};
+
+export default AppRoutes;

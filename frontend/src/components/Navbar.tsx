@@ -1,16 +1,19 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+import './Navbar.css';
 
-
-export default function Navbar() {
+const Navbar = () => {
   return (
-    <nav style={{ padding: '1rem', background: '#2E7D32', color: 'white' }}>
-      <ul style={{ display: 'flex', gap: '1rem', listStyle: 'none' }}>
-        <li><Link to="/">Inicio</Link></li>
-        <li><Link to="/productos">Productos</Link></li>
-        <li><Link to="/carrito">Carrito</Link></li>
-        <li><Link to="/login">Login</Link></li>
+    <nav className="navbar">
+      <div className="logo">E-Club</div>
+      <ul className="nav-links">
+        <li><NavLink to="/" end>Inicio</NavLink></li>
+        <li><NavLink to="/productos">Productos</NavLink></li>
+        <li><NavLink to="/carrito">Carrito</NavLink></li>
+        <li><NavLink to="/login">Ingresar</NavLink></li>
       </ul>
     </nav>
   );
-}
+};
+
+export default Navbar;
