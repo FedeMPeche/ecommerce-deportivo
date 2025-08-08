@@ -8,6 +8,7 @@ import Register from '../pages/Register';
 import Carrito from '../pages/Carrito';
 import Admin from '../pages/Admin';
 import NotFound from '../pages/NotFound';
+import ProductDetail from '../pages/ProductDetail';
 
 const AppRoutes = () => {
   return (
@@ -18,6 +19,7 @@ const AppRoutes = () => {
       <Route path="/register" element={<Register />} />
       <Route path="/carrito" element={<Carrito />} />
       <Route path="/admin" element={<Admin />} />
+      <Route path="/productos/:id" element={<ProductDetail />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

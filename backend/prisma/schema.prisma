@@ -15,3 +15,13 @@ model Usuario {
   rol       String  @default("cliente")
   creadoEn  DateTime @default(now())
 }
+
+model Producto {
+  id          Int     @id @default(autoincrement())
+  nombre      String
+  descripcion String
+  precio      Float
+  imagen      String
+  categoria   String
+  stock       Int
+}

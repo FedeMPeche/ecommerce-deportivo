@@ -1,4 +1,5 @@
-import React from 'react';
+import React from "react";
+import { Link } from "react-router-dom";
 
 type Props = {
   producto: {
@@ -14,12 +15,17 @@ type Props = {
 
 export default function ProductCard({ producto }: Props) {
   return (
-    <div className="product-card">
-      <img src={producto.imagen} alt={producto.nombre} width="200" />
-      <h3>{producto.nombre}</h3>
-      <p>{producto.descripcion}</p>
-      <p>Precio: ${producto.precio}</p>
-      <p>Stock: {producto.stock}</p>
-    </div>
+    <Link
+      to={`/productos/${producto.id}`}
+      style={{ textDecoration: "none", color: "inherit" }}
+    >
+      <div className="product-card">
+        <img src={producto.imagen} alt={producto.nombre} width="200" />
+        <h3>{producto.nombre}</h3>
+        <p>{producto.descripcion}</p>
+        <p>Precio: ${producto.precio}</p>
+        <p>Stock: {producto.stock}</p>
+      </div>
+    </Link>
   );
 }
