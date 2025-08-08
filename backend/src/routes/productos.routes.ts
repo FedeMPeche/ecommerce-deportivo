@@ -1,5 +1,5 @@
 import express from "express";
-import prisma from "../prismaClient"; // Asegurate que la ruta sea correcta
+import prisma from '../prismaClient';
 
 const router = express.Router();
 
@@ -7,8 +7,8 @@ const router = express.Router();
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    const producto = await prisma.Producto.findUnique({
-      where: { id: Number(id) }
+    const producto = await prisma.producto.findUnique({
+  where: { id: Number(req.params.id) },
     });
 
     if (!producto) {
