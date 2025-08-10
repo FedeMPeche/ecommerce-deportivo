@@ -1,26 +1,39 @@
-import React from 'react';
-import express from "express";
-import prisma from "../prismaClient.js"; // Asegurate que la ruta sea correcta
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 
-const router = express.Router();
+interface Product {
+  id: number;
+  nombre: string;
+  descripcion: string;
+  precio: number;
+  imagen: string;
+}
 
-// Obtener producto por ID
-router.get("/:id", async (req, res) => {
-  const { id } = req.params;
-  try {
-    const producto = await prisma.producto.findUnique({
-      where: { id: Number(id) }
-    });
+const ProductDetail = () => {
+  const { id } = useParams<{ id: string }>();
+  const [product, setProduct] = useState<Product | null>(null);
 
-    if (!producto) {
-      return res.status(404).json({ error: "Producto no encontrado" });
-    }
+  useEffect(() => {
+    fetch(`http://localhost:3001/api/productos/${id}`)
+      .then(res => res.json())
+      .then(data => setProduct(data))
+      .catch(err => console.error(err));
+  }, [id]);
 
-    res.json(producto);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Error al obtener el producto" });
-  }
-});
+  if (!product) return <p>Cargando producto...</p>;
 
-export default router;
+  return (
+    <div style={{ padding: "20px" }}>
+      <h1>{product.nombre}</h1>
+      <img
+        src={product.imagen}
+        alt={product.nombre}
+        style={{ maxWidth: "300px" }}
+      />
+      <p>{product.descripcion}</p>
+      <p><strong>Precio:</strong> ${product.precio}</p>
+    </div>
+  );
+};
+
+export default ProductDetail;

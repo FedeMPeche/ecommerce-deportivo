@@ -44,3 +44,31 @@ main {
   text-align: center;
   border-radius: 8px;
 }
+
+.form-container {
+  max-width: 400px;
+  margin: auto;
+  padding: 1rem;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+form input, form button {
+  width: 100%;
+  margin: 0.5rem 0;
+  padding: 0.7rem;
+  font-size: 1rem;
+}
+
+button {
+  background: #2E7D32;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #66BB6A;
+}
+
