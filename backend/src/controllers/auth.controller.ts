@@ -8,9 +8,9 @@ const prisma = new PrismaClient()
 const JWT_SECRET = process.env.JWT_SECRET || 'secreto_inseguro'
 
 export const register = async (req: Request, res: Response) => {
-  const { email, name, password } = req.body; // ← aquí ahora usamos name
+  const { name, email, password } = req.body; // ← aquí ahora usamos name
 
-  if (!email || !name || !password) {
+  if (!name || !email || !password) {
     return res.status(400).json({ error: 'Campos obligatorios faltantes' });
   }
 

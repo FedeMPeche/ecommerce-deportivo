@@ -2,8 +2,6 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { PrismaClient } from "@prisma/client";
-
-// Rutas
 import authRoutes from "./routes/auth.routes";
 import productosRouter from "./routes/productos.routes";
 
@@ -37,8 +35,9 @@ app.get("/api/users", async (_req, res) => {
   }
 });
 
-// Inicializar servidor
+// Inicializar servidor usando la variable PORT
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+  console.log(`Servidor backend en puerto ${PORT}`);
 });
+
 

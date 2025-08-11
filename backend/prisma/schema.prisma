@@ -17,11 +17,11 @@ model Usuario {
 }
 
 model Producto {
-  id          Int     @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   nombre      String
   descripcion String
   precio      Float
-  imagen      String
-  categoria   String
-  stock       Int
+  imagen      String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
