@@ -16,6 +16,7 @@ const Register = () => {
 
     try {
       await registerUser(name, email, password);
+      console.log({ name, email, password });
       alert("Registro exitoso, ahora puedes iniciar sesión.");
       navigate("/login");
     } catch (err: any) {
