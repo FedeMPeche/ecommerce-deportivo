@@ -5,19 +5,21 @@ import * as z from "zod";
 
 const productSchema = z.object({
   nombre: z.string().min(3, "El nombre debe tener al menos 3 caracteres"),
-  descripcion: z.string().min(10, "La descripción debe tener al menos 10 caracteres"),
+  descripcion: z
+    .string()
+    .min(10, "La descripción debe tener al menos 10 caracteres"),
   precio: z.number().min(1, "El precio debe ser mayor que cero"),
   stock: z.number().int().min(0, "Stock no puede ser negativo"),
-  // Quitamos la validación de URL porque ahora cargaremos archivo
+  imagenFile: z
+    .any()
+    .optional(), // el archivo no se valida aquí, se maneja en backend
 });
 
-type ProductFormData = z.infer<typeof productSchema> & {
-  imagenFile?: FileList; // para el archivo
-};
+type ProductFormData = z.infer<typeof productSchema>;
 
 interface ProductFormProps {
-  initialValues?: Partial<ProductFormData>;
-  onSubmit: (data: FormData) => void; // Cambia a FormData para enviar archivo
+  initialValues?: Partial<ProductFormData> & { imagenUrl?: string };
+  onSubmit: (data: FormData) => void;
   onCancel: () => void;
   submitLabel?: string;
 }
@@ -28,7 +30,9 @@ const ProductForm: React.FC<ProductFormProps> = ({
   onCancel,
   submitLabel = "Guardar",
 }) => {
-  const [preview, setPreview] = useState<string | null>(null);
+  const [preview, setPreview] = useState<string | null>(
+    initialValues?.imagenUrl || null
+  );
 
   const {
     register,
@@ -37,22 +41,28 @@ const ProductForm: React.FC<ProductFormProps> = ({
     formState: { errors, isSubmitting },
   } = useForm<ProductFormData>({
     resolver: zodResolver(productSchema),
-    defaultValues: initialValues,
+    defaultValues: {
+      nombre: initialValues?.nombre || "",
+      descripcion: initialValues?.descripcion || "",
+      precio: initialValues?.precio || 0,
+      stock: initialValues?.stock || 0,
+    },
   });
 
-  // Observamos el input file para mostrar preview
   const imagenFile = watch("imagenFile");
 
   useEffect(() => {
-    if (imagenFile && imagenFile.length > 0) {
-      const file = imagenFile[0];
+    if (imagenFile && (imagenFile as FileList).length > 0) {
+      const file = (imagenFile as FileList)[0];
       const objectUrl = URL.createObjectURL(file);
       setPreview(objectUrl);
       return () => URL.revokeObjectURL(objectUrl);
+    } else if (initialValues?.imagenUrl) {
+      setPreview(initialValues.imagenUrl);
     } else {
       setPreview(null);
     }
-  }, [imagenFile]);
+  }, [imagenFile, initialValues?.imagenUrl]);
 
   const handleFormSubmit = (data: ProductFormData) => {
     const formData = new FormData();
@@ -60,9 +70,11 @@ const ProductForm: React.FC<ProductFormProps> = ({
     formData.append("descripcion", data.descripcion);
     formData.append("precio", data.precio.toString());
     formData.append("stock", data.stock.toString());
-    if (data.imagenFile && data.imagenFile.length > 0) {
-      formData.append("imagen", data.imagenFile[0]);
+
+    if (data.imagenFile && (data.imagenFile as FileList).length > 0) {
+      formData.append("imagen", (data.imagenFile as FileList)[0]);
     }
+
     onSubmit(formData);
   };
 
@@ -77,24 +89,39 @@ const ProductForm: React.FC<ProductFormProps> = ({
       <div>
         <label>Descripción</label>
         <textarea {...register("descripcion")} />
-        {errors.descripcion && <p className="error">{errors.descripcion.message}</p>}
+        {errors.descripcion && (
+          <p className="error">{errors.descripcion.message}</p>
+        )}
       </div>
 
       <div>
         <label>Precio</label>
-        <input type="number" step="0.01" {...register("precio", { valueAsNumber: true })} />
+        <input
+          type="number"
+          step="0.01"
+          {...register("precio", { valueAsNumber: true })}
+        />
         {errors.precio && <p className="error">{errors.precio.message}</p>}
       </div>
 
       <div>
         <label>Imagen</label>
         <input type="file" accept="image/*" {...register("imagenFile")} />
-        {preview && <img src={preview} alt="Preview" style={{ maxWidth: "200px", marginTop: "10px" }} />}
+        {preview && (
+          <img
+            src={preview}
+            alt="Preview"
+            style={{ maxWidth: "200px", marginTop: "10px" }}
+          />
+        )}
       </div>
 
       <div>
         <label>Stock</label>
-        <input type="number" {...register("stock", { valueAsNumber: true })} />
+        <input
+          type="number"
+          {...register("stock", { valueAsNumber: true })}
+        />
         {errors.stock && <p className="error">{errors.stock.message}</p>}
       </div>
 
@@ -111,3 +138,4 @@ const ProductForm: React.FC<ProductFormProps> = ({
 };
 
 export default ProductForm;
+

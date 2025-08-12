@@ -65,30 +65,28 @@ const Admin = () => {
   };
 
   const handleFormSubmit = async (formData: FormData) => {
-  try {
-    if (editingProducto) {
-      // Editar producto con FormData
-      await axios.put(`/api/productos/${editingProducto.id}`, formData, {
-        headers: {
-          Authorization: `Bearer ${getToken()}`,
-          "Content-Type": "multipart/form-data",
-        },
-      });
-    } else {
-      // Crear producto con FormData
-      await axios.post("/api/productos", formData, {
-        headers: {
-          Authorization: `Bearer ${getToken()}`,
-          "Content-Type": "multipart/form-data",
-        },
-      });
+    try {
+      if (editingProducto) {
+        await axios.put(`/api/productos/${editingProducto.id}`, formData, {
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+            "Content-Type": "multipart/form-data",
+          },
+        });
+      } else {
+        await axios.post("/api/productos", formData, {
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+            "Content-Type": "multipart/form-data",
+          },
+        });
+      }
+      setShowForm(false);
+      fetchProductos();
+    } catch {
+      alert("Error al guardar producto");
     }
-    setShowForm(false);
-    fetchProductos();
-  } catch {
-    alert("Error al guardar producto");
-  }
-};
+  };
 
   const handleCancel = () => {
     setShowForm(false);
@@ -102,7 +100,9 @@ const Admin = () => {
       {loading && <p>Cargando productos...</p>}
       {error && <p className="error">{error}</p>}
 
-      {!loading && !error && productos.length === 0 && <p>No hay productos.</p>}
+      {!loading && !error && productos.length === 0 && (
+        <p>No hay productos.</p>
+      )}
 
       {!loading && !error && productos.length > 0 && (
         <table>
