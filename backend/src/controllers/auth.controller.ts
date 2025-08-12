@@ -22,7 +22,7 @@ export const register = async (req: Request, res: Response) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const nuevoUsuario = await prisma.usuario.create({
-      data: { email, nombre: name, password: hashedPassword, rol: "user" }, // 👈 rol por defecto
+      data: { email, nombre: name, password: hashedPassword, rol: "user" }, //user (rol por defecto).
     });
 
     return res.status(201).json({

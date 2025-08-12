@@ -18,8 +18,8 @@ app.use(express.json());
 
 // Rutas principales
 app.use("/api/auth", authRoutes);
+app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 app.use("/api/productos", productosRouter);
-app.use("/uploads", express.static(path.join(__dirname, "../../uploads")));
 
 // Ruta de prueba rápida
 app.get("/api/test", (_req, res) => {
