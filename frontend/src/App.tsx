@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthProvider';
 import PrivateRoute from './routes/PrivateRoute';
+import AdminRoute from './routes/AdminRoute';
 
 import Navbar from './components/Navbar';
 
@@ -25,46 +26,13 @@ const App = () => {
           <Route path="/register" element={<Register />} />
 
           {/* Rutas privadas */}
-          <Route
-            path="/"
-            element={
-              <PrivateRoute>
-                <Home />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/productos"
-            element={
-              <PrivateRoute>
-                <Productos />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/productos/:id"
-            element={
-              <PrivateRoute>
-                <ProductDetail />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/carrito"
-            element={
-              <PrivateRoute>
-                <Carrito />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/admin"
-            element={
-              <PrivateRoute>
-                <Admin />
-              </PrivateRoute>
-            }
-          />
+          <Route path="/" element={<PrivateRoute><Home /></PrivateRoute>} />
+          <Route path="/productos" element={<PrivateRoute><Productos /></PrivateRoute>} />
+          <Route path="/productos/:id" element={<PrivateRoute><ProductDetail /></PrivateRoute>} />
+          <Route path="/carrito" element={<PrivateRoute><Carrito /></PrivateRoute>} />
+
+          {/* Solo admin */}
+          <Route path="/admin" element={<AdminRoute><Admin /></AdminRoute>} />
 
           {/* Ruta fallback */}
           <Route path="*" element={<NotFound />} />
@@ -75,3 +43,4 @@ const App = () => {
 };
 
 export default App;
+

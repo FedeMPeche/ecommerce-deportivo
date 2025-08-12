@@ -72,3 +72,62 @@ button:hover {
   background: #66BB6A;
 }
 
+.admin-page {
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+}
+
+.admin-page table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.admin-page th,
+.admin-page td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.admin-page th {
+  background-color: #2e7d32;
+  color: white;
+}
+
+.admin-page button {
+  margin-right: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.product-form {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.product-form label {
+  font-weight: bold;
+}
+
+.product-form input,
+.product-form textarea {
+  padding: 8px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.product-form .error {
+  color: red;
+  font-size: 0.875rem;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+}
+

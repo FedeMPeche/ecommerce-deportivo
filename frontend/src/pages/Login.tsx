@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { loginUser } from "../utils/authService";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth";
+import { loginUser } from "../utils/authService"; // tu authService con axios
+import { useAuth } from "../context/AuthProvider";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { setAuthData } = useAuth();
+  const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -13,14 +13,15 @@ const Login = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-
     try {
-      const data = await loginUser(email, password);
-      setAuthData(data.token, data.user); // actualiza contexto
-      alert("Inicio de sesión exitoso.");
-      navigate("/");
+      const data = await loginUser(email, password); // espera { token, user }
+      // usar login del contexto -> guarda token y user en localStorage
+      login(data.user, data.token);
+
+      if (data.user.rol === "admin") navigate("/admin");
+      else navigate("/");
     } catch (err: any) {
-      setError(err.response?.data?.message || "Error al iniciar sesión.");
+      setError(err.response?.data?.error || err.message || "Error al iniciar sesión.");
     }
   };
 
@@ -41,5 +42,7 @@ const Login = () => {
 };
 
 export default Login;
+
+
 
 
