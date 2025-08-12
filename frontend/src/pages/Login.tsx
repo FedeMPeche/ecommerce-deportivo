@@ -1,11 +1,11 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { loginUser } from "../utils/authService";
 import { useNavigate } from "react-router-dom";
-
+import { useAuth } from "../hooks/useAuth";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { setAuthData } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -16,9 +16,9 @@ const Login = () => {
 
     try {
       const data = await loginUser(email, password);
-      localStorage.setItem("token", data.token);
+      setAuthData(data.token, data.user); // actualiza contexto
       alert("Inicio de sesión exitoso.");
-      navigate("/"); // Redirige al home o a donde quieras
+      navigate("/");
     } catch (err: any) {
       setError(err.response?.data?.message || "Error al iniciar sesión.");
     }
@@ -36,9 +36,10 @@ const Login = () => {
       <p>
         ¿No tenés cuenta? <a href="/register">Registrate aquí</a>
       </p>
-
     </div>
   );
 };
 
 export default Login;
+
+
