@@ -1,23 +1,35 @@
 import { Router } from "express";
 import {
   getProductos,
-  getProductoById,
   createProducto,
   updateProducto,
-  deleteProducto
+  deleteProducto,
 } from "../controllers/productos.controller";
-import { verifyToken } from "../middlewares/auth.middleware";
+import { verifyJWT, requireAdmin } from "../middlewares/auth.middleware";
+import { upload } from "../middlewares/upload.middleware";
 
 const router = Router();
 
-// Rutas públicas
-router.get("/", getProductos);          // Lista todos los productos
-router.get("/:id", getProductoById);    // Trae un producto por ID
+router.get("/", getProductos);
 
-// Rutas protegidas (solo admin)
-router.post("/", verifyToken, createProducto);      // Crear producto
-router.put("/:id", verifyToken, updateProducto);    // Actualizar producto
-router.delete("/:id", verifyToken, deleteProducto); // Eliminar producto
+router.post(
+  "/",
+  verifyJWT,
+  requireAdmin,
+  upload.single("imagen"),
+  createProducto
+);
+
+router.put(
+  "/:id",
+  verifyJWT,
+  requireAdmin,
+  upload.single("imagen"),
+  updateProducto
+);
+
+router.delete("/:id", verifyJWT, requireAdmin, deleteProducto);
 
 export default router;
+
 

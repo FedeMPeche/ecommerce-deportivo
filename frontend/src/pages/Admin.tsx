@@ -64,29 +64,31 @@ const Admin = () => {
     }
   };
 
-  const handleFormSubmit = async (data: Omit<Producto, "id">) => {
-    try {
-      if (editingProducto) {
-        // Editar
-        await axios.put(`/api/productos/${editingProducto.id}`, data, {
-          headers: {
-            Authorization: `Bearer ${getToken()}`,
-          },
-        });
-      } else {
-        // Crear
-        await axios.post("/api/productos", data, {
-          headers: {
-            Authorization: `Bearer ${getToken()}`,
-          },
-        });
-      }
-      setShowForm(false);
-      fetchProductos();
-    } catch {
-      alert("Error al guardar producto");
+  const handleFormSubmit = async (formData: FormData) => {
+  try {
+    if (editingProducto) {
+      // Editar producto con FormData
+      await axios.put(`/api/productos/${editingProducto.id}`, formData, {
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+    } else {
+      // Crear producto con FormData
+      await axios.post("/api/productos", formData, {
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
     }
-  };
+    setShowForm(false);
+    fetchProductos();
+  } catch {
+    alert("Error al guardar producto");
+  }
+};
 
   const handleCancel = () => {
     setShowForm(false);

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -7,15 +7,17 @@ const productSchema = z.object({
   nombre: z.string().min(3, "El nombre debe tener al menos 3 caracteres"),
   descripcion: z.string().min(10, "La descripción debe tener al menos 10 caracteres"),
   precio: z.number().min(1, "El precio debe ser mayor que cero"),
-  imagenUrl: z.string().url("Debe ser una URL válida"),
   stock: z.number().int().min(0, "Stock no puede ser negativo"),
+  // Quitamos la validación de URL porque ahora cargaremos archivo
 });
 
-type ProductFormData = z.infer<typeof productSchema>;
+type ProductFormData = z.infer<typeof productSchema> & {
+  imagenFile?: FileList; // para el archivo
+};
 
 interface ProductFormProps {
   initialValues?: Partial<ProductFormData>;
-  onSubmit: (data: ProductFormData) => void;
+  onSubmit: (data: FormData) => void; // Cambia a FormData para enviar archivo
   onCancel: () => void;
   submitLabel?: string;
 }
@@ -26,17 +28,46 @@ const ProductForm: React.FC<ProductFormProps> = ({
   onCancel,
   submitLabel = "Guardar",
 }) => {
+  const [preview, setPreview] = useState<string | null>(null);
+
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<ProductFormData>({
     resolver: zodResolver(productSchema),
     defaultValues: initialValues,
   });
 
+  // Observamos el input file para mostrar preview
+  const imagenFile = watch("imagenFile");
+
+  useEffect(() => {
+    if (imagenFile && imagenFile.length > 0) {
+      const file = imagenFile[0];
+      const objectUrl = URL.createObjectURL(file);
+      setPreview(objectUrl);
+      return () => URL.revokeObjectURL(objectUrl);
+    } else {
+      setPreview(null);
+    }
+  }, [imagenFile]);
+
+  const handleFormSubmit = (data: ProductFormData) => {
+    const formData = new FormData();
+    formData.append("nombre", data.nombre);
+    formData.append("descripcion", data.descripcion);
+    formData.append("precio", data.precio.toString());
+    formData.append("stock", data.stock.toString());
+    if (data.imagenFile && data.imagenFile.length > 0) {
+      formData.append("imagen", data.imagenFile[0]);
+    }
+    onSubmit(formData);
+  };
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="product-form">
+    <form onSubmit={handleSubmit(handleFormSubmit)} className="product-form">
       <div>
         <label>Nombre</label>
         <input {...register("nombre")} />
@@ -56,9 +87,9 @@ const ProductForm: React.FC<ProductFormProps> = ({
       </div>
 
       <div>
-        <label>URL Imagen</label>
-        <input {...register("imagenUrl")} />
-        {errors.imagenUrl && <p className="error">{errors.imagenUrl.message}</p>}
+        <label>Imagen</label>
+        <input type="file" accept="image/*" {...register("imagenFile")} />
+        {preview && <img src={preview} alt="Preview" style={{ maxWidth: "200px", marginTop: "10px" }} />}
       </div>
 
       <div>

@@ -22,7 +22,7 @@ const Navbar = () => {
           </NavLink>
         </li>
         <li>
-          <NavLink to="/productos">Productos</NavLink>
+          <NavLink to="/productos" key={Date.now()}>Productos</NavLink>
         </li>
         <li>
           <NavLink to="/carrito">Carrito</NavLink>
