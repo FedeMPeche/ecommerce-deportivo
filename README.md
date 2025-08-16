@@ -1,7 +1,5 @@
 # 🏅 E-commerce Deportivo
 
-Proyecto de e-commerce desarrollado con fines educativos y de portfolio. Inspirado en el sitio [ACE Artículos Deportivos](https://acearticulosdeportivos.com.ar/), adaptado a una identidad visual deportiva de club.
-
 ## 🧱 Stack tecnológico
 
 ### Frontend
