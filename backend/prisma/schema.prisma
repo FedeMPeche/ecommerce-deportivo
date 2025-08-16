@@ -7,7 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Usuario {
+model usuario {
   id        Int     @id @default(autoincrement())
   email     String  @unique
   nombre    String
@@ -16,7 +16,7 @@ model Usuario {
   creadoEn  DateTime @default(now())
 }
 
-model Producto {
+model producto {
   id          Int      @id @default(autoincrement())
   nombre      String
   descripcion String
