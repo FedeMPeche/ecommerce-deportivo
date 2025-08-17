@@ -7,7 +7,7 @@ type Props = {
     nombre: string;
     descripcion: string;
     precio: number;
-    imagen: string;
+    imagenUrl: string;
     categoria: string;
     stock: number;
   };
@@ -17,10 +17,9 @@ export default function ProductCard({ producto }: Props) {
   return (
     <Link
       to={`/productos/${producto.id}`}
-      style={{ textDecoration: "none", color: "inherit" }}
-    >
+      style={{ textDecoration: "none", color: "inherit" }}>
       <div className="product-card">
-        <img src={producto.imagen} alt={producto.nombre} width="200" />
+        <img src={producto.imagenUrl} alt={producto.nombre} className="product-image"/>
         <h3>{producto.nombre}</h3>
         <p>{producto.descripcion}</p>
         <p>Precio: ${producto.precio}</p>

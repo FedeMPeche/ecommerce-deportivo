@@ -6,7 +6,7 @@ interface Product {
   nombre: string;
   descripcion: string;
   precio: number;
-  imagen: string;
+  imagenUrl: string;
 }
 
 const ProductDetail = () => {
@@ -26,9 +26,9 @@ const ProductDetail = () => {
     <div style={{ padding: "20px" }}>
       <h1>{product.nombre}</h1>
       <img
-        src={product.imagen}
-        alt={product.nombre}
-        style={{ maxWidth: "300px" }}
+      src={`http://localhost:3001${product.imagenUrl}`}
+      alt={product.nombre}
+      style={{ maxWidth: "300px" }}
       />
       <p>{product.descripcion}</p>
       <p><strong>Precio:</strong> ${product.precio}</p>

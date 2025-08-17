@@ -12,7 +12,7 @@ const productSchema = z.object({
   stock: z.number().int().min(0, "Stock no puede ser negativo"),
   imagenFile: z
     .any()
-    .optional(), // el archivo no se valida aquí, se maneja en backend
+    .optional(),
 });
 
 type ProductFormData = z.infer<typeof productSchema>;

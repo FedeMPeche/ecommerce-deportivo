@@ -3,8 +3,10 @@ import path from "path";
 import fs from "fs";
 import { Request } from "express";
 
+// Carpeta absoluta a /backend/uploads
+const uploadDir = path.join(__dirname, "../../uploads");
+
 // Crear carpeta uploads si no existe
-const uploadDir = "uploads";
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir);
 }

@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import ProductCard from '../components/ProductCard';
 
-interface Producto {
+export interface Producto {
   id: number;
   nombre: string;
   descripcion: string;
   precio: number;
-  imagen: string;
+  imagenUrl: string; 
   categoria: string;
   stock: number;
+  creadoEn?: string;
+  actualizadoEn?: string;
 }
 
 const Productos = () => {
