@@ -19,8 +19,8 @@ Proyecto de e-commerce desarrollado con fines educativos y de portfolio. Inspira
 
 ## 🎯 Objetivos del proyecto
 
-- Desarrollar y testear localmente sin depender de servicios pagos
-- Validar funcionalidades: login, registro, carrito, pagos, panel admin
+- Desarrollar y testear localmente
+- Validar funcionalidades: login, registro, carrito, pagos, panel admin, productos, etc. 
 - Aplicar buenas prácticas de seguridad y performance
 - Crear un diseño limpio, deportivo y responsivo
 
@@ -41,3 +41,5 @@ ecommerce-deportivo/
 ├── backend/        # Express + Prisma + MySQL
 ├── frontend/       # React + TypeScript + CSS
 └── README.md
+
+## 📁 Puede estar sujeto a actualizaciones. 
