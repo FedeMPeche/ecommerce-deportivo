@@ -7,23 +7,37 @@ export const getProductos = async (req: Request, res: Response) => {
     const productos = await prisma.producto.findMany();
     res.json(productos);
   } catch (error) {
-    console.error(error);
+    console.error("Error al obtener productos:", error);
     res.status(500).json({ error: "Error al obtener productos" });
   }
 };
 
-export const createProducto = async (req: Request, res: Response) => {
+export const getProductoById = async (req: Request, res: Response) => {
+  const { id } = req.params;
   try {
-    const { nombre, descripcion, precio, stock } = req.body;
-    let imagenUrl = null;
+    const producto = await prisma.producto.findUnique({
+      where: { id: Number(id) },
+    });
 
-    if (req.file) {
-      imagenUrl = `/uploads/${req.file.filename}`;
-    } else {
-      return res.status(400).json({ error: "Falta imagen" });
+    if (!producto) {
+      return res.status(404).json({ error: "Producto no encontrado" });
     }
 
-    const nuevoProducto = await prisma.producto.create({
+    res.json(producto);
+  } catch (error) {
+    console.error("Error al obtener producto:", error);
+    res.status(500).json({ error: "Error al obtener producto" });
+  }
+};
+
+export const createProducto = async (req: Request, res: Response) => {
+  const { nombre, descripcion, precio, stock, categoria } = req.body;
+  const imagenUrl = req.file
+    ? `/uploads/${req.file.filename}`
+    : "/uploads/placeholder.png"; // 👈 Placeholder si no hay imagen
+
+  try {
+    const producto = await prisma.producto.create({
       data: {
         nombre,
         descripcion,
@@ -33,48 +47,37 @@ export const createProducto = async (req: Request, res: Response) => {
       },
     });
 
-    res.status(201).json(nuevoProducto);
+    res.status(201).json(producto);
   } catch (error) {
-    console.error(error);
+    console.error("Error al crear producto:", error);
     res.status(500).json({ error: "Error al crear producto" });
   }
 };
 
 export const updateProducto = async (req: Request, res: Response) => {
-  const id = Number(req.params.id);
-  const { nombre, descripcion, precio, stock } = req.body;
+  const { id } = req.params;
+  const { nombre, descripcion, precio, stock, categoria } = req.body;
+
+  let imagenUrl: string | undefined;
+  if (req.file) {
+    imagenUrl = `/uploads/${req.file.filename}`;
+  }
 
   try {
-    const productoActual = await prisma.producto.findUnique({ where: { id } });
-    if (!productoActual) return res.status(404).json({ error: "Producto no encontrado" });
-
-    let imagenUrl = productoActual.imagenUrl;
-
-    if (req.file) {
-      imagenUrl = `/uploads/${req.file.filename}`;
-      // Borrar imagen vieja
-      if (productoActual.imagenUrl) {
-        const oldImagePath = `.${productoActual.imagenUrl}`;
-        fs.unlink(oldImagePath, (err) => {
-          if (err) console.error("Error al borrar imagen vieja:", err);
-        });
-      }
-    }
-
-    const productoActualizado = await prisma.producto.update({
-      where: { id },
+    const producto = await prisma.producto.update({
+      where: { id: Number(id) },
       data: {
         nombre,
         descripcion,
         precio: Number(precio),
         stock: Number(stock),
-        imagenUrl,
+        ...(imagenUrl ? { imagenUrl } : {}), // 👈 si no hay nueva img, no pisa la anterior
       },
     });
 
-    res.json(productoActualizado);
+    res.json(producto);
   } catch (error) {
-    console.error(error);
+    console.error("Error al actualizar producto:", error);
     res.status(500).json({ error: "Error al actualizar producto" });
   }
 };
