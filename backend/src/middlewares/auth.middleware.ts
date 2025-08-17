@@ -25,9 +25,10 @@ export const verifyJWT = (req: AuthRequest, res: Response, next: NextFunction) =
 };
 
 export const requireAdmin = (req: AuthRequest, res: Response, next: NextFunction) => {
-  if (!req.user || req.user.rol !== "ADMIN") {
-    return res.status(403).json({ error: "Acceso denegado: se requiere rol ADMIN" });
+  if (!req.user || req.user.rol !== "admin") {
+    return res.status(403).json({ error: "Acceso denegado: se requiere rol admin" });
   }
   next();
 };
+
 
