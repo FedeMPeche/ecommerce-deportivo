@@ -26,3 +26,22 @@ model producto {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
+
+model Pedido {
+  id        Int      @id @default(autoincrement())
+  usuario   usuario  @relation(fields: [usuarioId], references: [id])
+  usuarioId Int
+  items     PedidoItem[]
+  total     Float
+  creadoEn  DateTime @default(now())
+}
+
+model PedidoItem {
+  id        Int      @id @default(autoincrement())
+  pedido    Pedido   @relation(fields: [pedidoId], references: [id])
+  pedidoId  Int
+  producto  producto @relation(fields: [productoId], references: [id])
+  productoId Int
+  cantidad  Int
+  precio    Float
+}
