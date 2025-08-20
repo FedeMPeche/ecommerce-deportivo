@@ -8,40 +8,42 @@ datasource db {
 }
 
 model usuario {
-  id        Int     @id @default(autoincrement())
-  email     String  @unique
-  nombre    String
-  password  String
-  rol       String  @default("cliente")
-  creadoEn  DateTime @default(now())
+  id       Int      @id @default(autoincrement())
+  email    String   @unique
+  nombre   String
+  password String
+  rol      String   @default("user")
+  creadoEn DateTime @default(now())
+  pedidos  Pedido[]
 }
 
 model producto {
-  id          Int      @id @default(autoincrement())
+  id          Int          @id @default(autoincrement())
   nombre      String
   descripcion String
   precio      Float
   stock       Int?
   imagenUrl   String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  pedidoItems PedidoItem[]
 }
 
 model Pedido {
-  id        Int      @id @default(autoincrement())
-  usuario   usuario  @relation(fields: [usuarioId], references: [id])
+  id        Int          @id @default(autoincrement())
+  usuario   usuario      @relation(fields: [usuarioId], references: [id])
   usuarioId Int
   items     PedidoItem[]
   total     Float
-  creadoEn  DateTime @default(now())
+  creadoEn  DateTime     @default(now())
 }
 
 model PedidoItem {
-  id        Int      @id @default(autoincrement())
-  pedido    Pedido   @relation(fields: [pedidoId], references: [id])
-  pedidoId  Int
-  producto  producto @relation(fields: [productoId], references: [id])
+  id         Int      @id @default(autoincrement())
+  pedido     Pedido   @relation(fields: [pedidoId], references: [id])
+  pedidoId   Int
+  producto   producto @relation(fields: [productoId], references: [id])
   productoId Int
-  cantidad  Int
-  precio    Float
+  cantidad   Int
+  precio     Float
 }
