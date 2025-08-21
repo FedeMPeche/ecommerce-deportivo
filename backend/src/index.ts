@@ -5,6 +5,8 @@ import { PrismaClient } from "@prisma/client";
 import path from "path";
 import authRoutes from "./routes/auth.routes";
 import productosRouter from "./routes/productos.routes";
+import pedidosRoutes from "./routes/pedidos.routes";
+
 
 dotenv.config();
 
@@ -20,6 +22,7 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 app.use("/api/productos", productosRouter);
+app.use("/api/pedidos", pedidosRoutes);
 
 // Ruta de prueba rápida
 app.get("/api/test", (_req, res) => {

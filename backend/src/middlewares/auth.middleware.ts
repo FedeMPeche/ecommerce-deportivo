@@ -7,7 +7,12 @@ export interface AuthRequest extends Request {
   user?: JwtPayload & { id: number; email: string; rol: string };
 }
 
-export const verifyJWT = (req: AuthRequest, res: Response, next: NextFunction) => {
+// Middleware principal para verificar JWT
+export const verifyJWT = (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+) => {
   const authHeader = req.headers.authorization;
   const token = authHeader?.split(" ")[1];
 
@@ -24,11 +29,37 @@ export const verifyJWT = (req: AuthRequest, res: Response, next: NextFunction) =
   }
 };
 
-export const requireAdmin = (req: AuthRequest, res: Response, next: NextFunction) => {
+// Alias para compatibilidad (verifyToken = verifyJWT)
+export const verifyToken = verifyJWT;
+
+// Middleware: solo Admin
+export const requireAdmin = (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+) => {
   if (!req.user || req.user.rol !== "admin") {
-    return res.status(403).json({ error: "Acceso denegado: se requiere rol admin" });
+    return res
+      .status(403)
+      .json({ error: "Acceso denegado: se requiere rol admin" });
   }
   next();
 };
+
+// Middleware: solo User
+export const requireUser = (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  if (!req.user || req.user.rol !== "user") {
+    return res
+      .status(403)
+      .json({ error: "Acceso denegado: se requiere rol user" });
+  }
+  next();
+};
+
+
 
 
