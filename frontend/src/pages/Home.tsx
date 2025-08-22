@@ -4,7 +4,7 @@ const Home = () => {
   return (
     <section>
       <h1>Bienvenido al Club 'La Cantera Padel'</h1>
-      <p>Los mejores artículos deportivos al mejor precio.</p>
+      <p>Los mejores artículos deportivos.</p>
       <img
         src="/assets/banner.jpg"
         alt="Banner"
