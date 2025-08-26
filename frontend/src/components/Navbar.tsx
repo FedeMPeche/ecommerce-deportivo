@@ -1,16 +1,21 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import "./Navbar.css";
-import { AuthProvider, useAuth } from '../context/AuthContext'; 
+import { useAuth } from '../context/AuthContext'; 
+import { useCart } from "../context/CartContext";  // 👈 Importamos el hook del carrito
 
 const Navbar = () => {
   const { user, logout, isAuthenticated } = useAuth();
+  const { cart } = useCart(); // 👈 obtenemos el carrito del contexto
   const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
     navigate("/"); 
   };
+
+  // 👇 cantidad total de productos sumando las cantidades
+  const totalItems = cart.reduce((acc, item) => acc + item.cantidad, 0);
 
   return (
     <nav className="navbar">
@@ -25,7 +30,9 @@ const Navbar = () => {
           <NavLink to="/productos" key={Date.now()}>Productos</NavLink>
         </li>
         <li>
-          <NavLink to="/carrito">Carrito</NavLink>
+          <NavLink to="/carrito">
+            Carrito {totalItems > 0 && <span className="cart-badge">{totalItems}</span>}
+          </NavLink>
         </li>
 
         {/* Mostrar enlace a Admin solo si es admin */}
@@ -65,3 +72,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+

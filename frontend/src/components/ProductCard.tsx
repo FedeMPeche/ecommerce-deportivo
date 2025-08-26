@@ -1,37 +1,22 @@
-import React, { useState } from 'react';
-import { Producto } from '../pages/Productos';
+import React from "react";
+import { Producto } from "../pages/Productos";
+import { useCart } from "../context/CartContext";
 
-interface Props {
-  producto: Producto;
-}
-
-const ProductCard: React.FC<Props> = ({ producto }) => {
-  const [imgSrc, setImgSrc] = useState(
-    producto.imagenUrl
-      ? `http://localhost:3001${producto.imagenUrl}`
-      : '../assets/placeholder.png'
-  );
-
-  const handleError = () => {
-    setImgSrc('/assets/placeholder.png');
-  };
+const ProductCard = ({ producto }: { producto: Producto }) => {
+  const { addToCart } = useCart();
 
   return (
     <div className="product-card">
-      <img
-        src={imgSrc}
-        alt={producto.nombre}
-        onError={handleError}
-        className="product-image"
-      />
+      <img src={producto.imagenUrl} alt={producto.nombre} />
       <h2>{producto.nombre}</h2>
       <p>{producto.descripcion}</p>
       <p><strong>${producto.precio}</strong></p>
-      <p>Stock: {producto.stock}</p>
+      <button onClick={() => addToCart(producto)}>Agregar al carrito</button>
     </div>
   );
 };
 
 export default ProductCard;
+
 
 
